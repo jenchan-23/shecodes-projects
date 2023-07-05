@@ -1,0 +1,93 @@
+/* STANDARD BODY TAG STYLES */
+h1 {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+  font-size: 22px;
+  color: grey;
+  margin-bottom: 20px;
+}
+h3 {
+  margin: 15px 0 10px 100px;
+  font-size: 18px;
+  color: grey;
+}
+hr {
+  border-top: 2px dotted grey;
+  margin: 15px;
+}
+
+/* CUSTOMISED BODY STYLES */
+/* Search city form */
+.change-city-form {
+  margin: 20px auto;
+  padding: 0px 60px;
+  max-width: 70%;
+  text-align: center;
+  font-size: 12px;
+}
+/* Main weather app box */
+.main-app-box {
+  margin: 20px auto;
+  max-width: 80%;
+  border: 1px solid black;
+  border-radius: 100px 100px 15px 15px;
+}
+/* Cel to Feh superscript */
+#select-temp-metric,
+.convert-temp-metric {
+  display: inline;
+  font-size: 60%;
+  padding: 0;
+  vertical-align: text-top;
+}
+
+/* Today weather left main section */
+#today-app-box {
+  margin: 0 auto;
+  padding: 10px 15px;
+}
+#today-weather-icon {
+  font-size: 60px;
+  text-align: right;
+  vertical-align: top;
+  color: grey;
+}
+.today-min-max-temp,
+#today-weather-desc {
+  font-size: 12px;
+}
+.today-temp {
+  font-size: 20px;
+}
+.today-temp-list {
+  list-style: none;
+  text-align: left;
+  padding-left: 0;
+}
+/* Today weather right details section */
+.tbody {
+  padding: 10px 10px;
+  font-size: 14px;
+  line-height: 10px;
+  margin-top: 20px;
+}
+.table-left {
+  text-align: right;
+  border-right: 2px dotted lightgrey;
+  border-bottom: none;
+}
+.table-right {
+  border-bottom: none;
+}
+
+/* Next 5 days forecast section */
+.next-5days-forecast {
+  text-align: center;
+  margin: 20px auto;
+  font-size: 14x;
+}
+.next-5days-icons {
+  font-size: 33px;
+}
