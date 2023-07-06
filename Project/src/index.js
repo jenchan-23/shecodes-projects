@@ -1,64 +1,10 @@
 // 1.0 - FUNCTIONS SECTION
-// 1.1 - Functions - General
-// 1.1.1 - Functions - Formatting
-
-//NEED EDIT
-
-// 1.2 - Functions - Date and Time
-function time12Hours(currHour, currMins) {
-  if (currHour > 0 && currHour < 12) {
-    return `${currHour.toString().padStart(2, "0")}:${currMins
-      .toString()
-      .padStart(2, "0")} AM`;
-  } else {
-    if (currHour === 0) {
-      return `${currHour + 12}:${currMins.toString().padStart(2, "0")} AM`;
-    } else {
-      return `${(currHour - 12).toString().padStart(2, "0")}:${currMins
-        .toString()
-        .padStart(2, "0")} PM`;
-    }
-  }
-}
-
-function dateSuffix(currDate) {
-  if (currDate < 3) {
-    return currDate;
-  } else {
-    return 3;
-  }
-}
-
 // 1.3 - Functions - Weather API
 function setCityHeader(response) {
   let setCity = document.querySelector("#current-city");
   setCity.innerHTML = response.data.name;
 }
 
-// WIP weather icon function
-/*
-function setWeatherIcon(response) {
-  console.log(response);
-  let weatherDesc = response.data.weather.main;
-  switch (weatherDesc) {
-    case "Clear":
-      return "fa-sun";
-    case "Clouds":
-      return "fa-cloud";
-    case "Rain":
-      return "fa-cloud-showers-heavy";
-    case "Thunderstorm":
-      return "fa-cloud-bolt";
-    case "Drizzle":
-      return "fa-cloud-rain";
-    case "Snow":
-      return "fa-snowflake";
-
-    default:
-      return "fa-smog";
-  }
-}
-*/
 function setTempData(response) {
   let todayTemp = document.querySelector("#today-temp");
   todayTemp.innerHTML = Math.round(response.data.main.temp, 1);
@@ -87,7 +33,6 @@ function setTempData(response) {
 
 function updateWeatherData(url) {
   axios.get(url).then(setCityHeader);
-  // axios.get(url).then(setWeatherIcon); // WIP
   axios.get(url).then(setTempData);
 }
 
@@ -137,39 +82,20 @@ function currCityButton(event) {
 
 // 2.0 - SCRIPT
 // 2.1 - Script - Date and Time
-let weekdaysArr = ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"];
 
-let monthsArr = [
-  "January",
-  "Feburary",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-let dateArr = ["st", "nd", "rd", "th"];
-
-let currentDateTime = new Date();
-let currentHour = currentDateTime.getHours();
-let currentMinute = currentDateTime.getMinutes();
-let currentDay = weekdaysArr[currentDateTime.getDay()];
-let currentDate = currentDateTime.getDate();
-let currentDateSuffix = dateArr[dateSuffix(currentDate)];
-let currentMonth = monthsArr[currentDateTime.getMonth()];
-let currentYear = currentDateTime.getFullYear();
-
-let currWeatherTime = document.querySelector("#current-time");
-currWeatherTime.innerHTML = time12Hours(currentHour, currentMinute);
+let currentDateTime = Intl.DateTimeFormat("en-GB", {
+  weekday: "short",
+  day: "2-digit",
+  month: "short",
+  year: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: "true",
+  timeZoneName: "short",
+}).format(new Date());
 
 let currWeatherDate = document.querySelector("#current-date");
-currWeatherDate.innerHTML = `${currentDay}, ${currentDate}${currentDateSuffix} ${currentMonth}, ${currentYear}`;
+currWeatherDate.innerHTML = currentDateTime;
 
 // 2.2 - Script - Weather API
 // 2.2.1 - Scipt - Default City/Units on load
