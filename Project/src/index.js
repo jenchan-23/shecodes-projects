@@ -97,6 +97,17 @@ function setTempData(response) {
 
   let todayHumidity = document.querySelector("#today-humidity");
   todayHumidity.innerHTML = `${Math.round(response.data.main.humidity, 1)}%`;
+
+  let lastUpdateData = document.querySelector("#last-update-weather");
+  lastUpdateData.innerHTML = Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: "true",
+    timeZoneName: "short",
+  }).format(new Date(response.data.dt * 1000));
 }
 
 function updateWeatherData(url) {
