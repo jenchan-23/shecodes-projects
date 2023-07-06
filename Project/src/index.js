@@ -6,7 +6,22 @@ function setCityHeader(response) {
 }
 
 function setTempData(response) {
+  let currentDateTime = Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: "true",
+    timeZoneName: "short",
+  }).format(new Date());
+
+  let lastUpdateWeatherDate = document.querySelector("#current-date");
+
+  lastUpdateWeatherDate.innerHTML = currentDateTime;
   let todayTemp = document.querySelector("#today-temp");
+
   todayTemp.innerHTML = Math.round(response.data.main.temp, 1);
 
   let todayMinTemp = document.querySelector("#today-min-temp");
@@ -47,31 +62,17 @@ function capitaliseFirstLetter(word) {
 
 function changeCity(event) {
   event.preventDefault();
-  let searchInput = document.querySelector("#city-name");
-  searchInput = capitaliseFirstLetter(searchInput.value.toLowerCase().trim());
+  let setLocation = document.querySelector("#city-name");
+  setLocation = capitaliseFirstLetter(setLocation.value.toLowerCase().trim());
 
-  let setLocation = null;
-
-  // Set location variable depending if country code is part of input
-  if (searchInput.includes(",")) {
-    let extractCountryCode = searchInput
-      .substring(searchInput.indexOf(",") + 1)
-      .toUpperCase();
-    let extractCityName = searchInput.substring(0, searchInput.length - 3);
-    setLocation = `${extractCityName},${extractCountryCode}`;
-  } else {
-    let extractCityName = searchInput;
-    setLocation = extractCityName;
-  }
-
-  let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${defaultUnits}`;
+  let setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${defaultUnits}`;
 
   updateWeatherData(setLocationUrl);
 }
 
 // 1.5 - Functions - Current City Button
 function changeCitybyCoords(position) {
-  let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=${defaultUnits}`;
+  let setLocationUrl = `https://api.shecodes.io/weather/v1/current?lon=${position.coords.longitude}&lat=${position.coords.latitude}&key=${apiKey}&units=${defaultUnits}`;
   updateWeatherData(setLocationUrl);
 }
 
@@ -83,26 +84,12 @@ function currCityButton(event) {
 // 2.0 - SCRIPT
 // 2.1 - Script - Date and Time
 
-let currentDateTime = Intl.DateTimeFormat("en-GB", {
-  weekday: "short",
-  day: "2-digit",
-  month: "short",
-  year: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: "true",
-  timeZoneName: "short",
-}).format(new Date());
-
-let currWeatherDate = document.querySelector("#current-date");
-currWeatherDate.innerHTML = currentDateTime;
-
 // 2.2 - Script - Weather API
 // 2.2.1 - Scipt - Default City/Units on load
-let defaultLocation = "Melbourne,AU";
+let defaultLocation = "Melbourne";
 let defaultUnits = "metric";
-let apiKey = "7059cb165caa3316bff682d263a01b1e";
-let locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}&units=${defaultUnits}`;
+let apiKey = "18a0ed27t1bf3oc3ff7b86307c44ff70";
+let locationUrl = `https://api.shecodes.io/weather/v1/current?query=${defaultLocation}&key=${apiKey}&units=${defaultUnits}`;
 updateWeatherData(locationUrl);
 
 /* let currentWeatherDesc = axios.get(cityUrl).then(weatherDescID);
