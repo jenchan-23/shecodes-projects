@@ -28,8 +28,6 @@ function setWeatherIcon(weatherMain) {
 */
 
 function setTempData(response) {
-  console.log(response);
-
   let timeNow = Intl.DateTimeFormat("en-GB", {
     weekday: "short",
     day: "2-digit",
@@ -69,8 +67,6 @@ function setTempData(response) {
       weatherDesc = '<i class="fa-smog"></i>';
       break;
   }
-
-  console.log(weatherDesc);
 
   let currentWeatherIcon = document.querySelector("#today-weather-icon");
   currentWeatherIcon.innerHTML = weatherDesc;
