@@ -17,6 +17,10 @@ hr {
   margin: 15px;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* CUSTOMISED BODY STYLES */
 /* Search city form */
 
@@ -35,13 +39,13 @@ hr {
 /* Main weather app box */
 .main-app-box {
   margin: 20px auto;
-  max-width: 600px;
+  padding: 20px 20px;
+  max-width: 650px;
   border: 1px solid black;
   border-radius: 100px 100px 15px 15px;
 }
 /* Cel to Feh superscript */
-#select-temp-metric,
-.convert-temp-metric {
+#select-temp-metric {
   display: inline;
   font-size: 60%;
   padding: 0;
@@ -51,7 +55,7 @@ hr {
 /* Today weather left main section */
 #today-app-box {
   margin: 0 auto;
-  padding: 10px 15px;
+  padding: 10px 10px;
 }
 #today-weather-icon {
   font-size: 60px;
@@ -67,6 +71,10 @@ hr {
 .today-temp {
   font-size: 25px;
   font-weight: 500;
+}
+.disableLink {
+  cursor: default;
+  color: black;
 }
 .today-temp-list {
   list-style: none;
@@ -103,5 +111,4 @@ hr {
 footer {
   text-align: right;
   font-size: 10px;
-  max-width: 600px;
 }

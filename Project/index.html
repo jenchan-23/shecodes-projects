@@ -30,14 +30,9 @@
               placeholder="Enter another city..."
               aria-label="change city"
               autocomplete="off"
-              id="city-name"
+              id="search-city-input"
             />
-            <input
-              class="col-3 btn btn-primary"
-              type="submit"
-              value="Find"
-              id="search-city-form"
-            />
+            <input class="col-3 btn btn-primary" type="submit" value="Find" />
 
             <input
               class="col-1 btn btn-primary"
@@ -67,15 +62,14 @@
               <div class="col-6">
                 <ul class="today-temp-list">
                   <li class="today-min-max-temp">
-                    <span id="today-min-temp">--</span
-                    ><span class="convert-temp-metric">°C</span> |
-                    <span id="today-max-temp">--</span
-                    ><span class="convert-temp-metric">°C</span>
+                    <span id="today-min-temp">--</span>° |
+                    <span id="today-max-temp">--</span>°
                   </li>
                   <li class="today-temp">
                     <span id="today-temp">--</span
                     ><span id="select-temp-metric"
-                      >°C | <a href="#" id="convertTempMetric">°F</a></span
+                      ><a href="#" class="disableLink" id="feh-to-cel">°C</a> |
+                      <a href="#" id="cel-to-feh">°F</a></span
                     >
                   </li>
                   <li id="today-weather-desc">---</li>
@@ -102,8 +96,7 @@
                 <tr>
                   <td class="table-left">Feels Like</td>
                   <td class="table-right">
-                    <span id="feels-like-temp">--</span
-                    ><span class="convert-temp-metric">°C</span>
+                    <span id="feels-like-temp">--</span>°
                   </td>
                 </tr>
                 <tr>
@@ -117,18 +110,21 @@
         </div>
       </div>
       <!--Weather App - Today Section Ends-->
+      <footer>
+        Designed by |
+        <a
+          href="https://github.com/jenchan-23/shecodes-projects"
+          target="_blank"
+          >Jenny Chan</a
+        >
+        | Opensourced Weather API by
+        <a href="https://openweathermap.org/api" target="_blank">OpenWeather</a>
+        <br />
+        Weather Data last updated on <span id="last-update-weather"></span>
+      </footer>
     </div>
     <!--Weather App Ends-->
-    <footer>
-      Designed by |
-      <a href="https://github.com/jenchan-23/shecodes-projects" target="_blank"
-        >Jenny Chan</a
-      >
-      | Opensourced Weather API by
-      <a href="https://openweathermap.org/api" target="_blank">OpenWeather</a>
-      <br />
-      Weather Data last updated: <span id="last-update-weather"></span>
-    </footer>
+
     <script src="src/index.js"></script>
   </body>
 </html>

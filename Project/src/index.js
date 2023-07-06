@@ -5,29 +5,7 @@ function setCityHeader(response) {
   setCity.innerHTML = response.data.name;
 }
 
-/*
-function setWeatherIcon(weatherMain) {
-  switch (weatherMain) {
-    case "Clear":
-      return '<i class="fa-solid fa-sun"></i>';
-    case "Clouds":
-      return '<i class="fa-solid fa-cloud"></i>';
-    case "Rain":
-      return '<i class="fa-solid fa-cloud-showers-heavy"></i>';
-    case "Thunderstorm":
-      return '<i class="fa-solid fa-cloud-bolt"></i>';
-    case "Drizzle":
-      return '<i class="fa-solid fa-cloud-rain"></i>';
-    case "Snow":
-      return '<i class="fa-snowflake"></i>';
-
-    default:
-      return '<i class="fa-smog"></i>';
-  }
-}
-*/
-
-function setTempData(response) {
+function setWeatherData(response) {
   let timeNow = Intl.DateTimeFormat("en-GB", {
     weekday: "short",
     day: "2-digit",
@@ -112,7 +90,7 @@ function setTempData(response) {
 
 function updateWeatherData(url) {
   axios.get(url).then(setCityHeader);
-  axios.get(url).then(setTempData);
+  axios.get(url).then(setWeatherData);
 }
 
 // 1.2 - Functions - Search City Form
@@ -126,10 +104,8 @@ function capitaliseFirstLetter(word) {
 
 function changeCity(event) {
   event.preventDefault();
-  let searchInput = document.querySelector("#city-name");
+  let searchInput = document.querySelector("#search-city-input");
   searchInput = capitaliseFirstLetter(searchInput.value.toLowerCase().trim());
-
-  let setLocation = null;
 
   // Set location variable depending if country code is part of input
   if (searchInput.includes(",")) {
@@ -143,15 +119,19 @@ function changeCity(event) {
     setLocation = extractCityName;
   }
 
-  let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${defaultUnits}`;
+  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
 
   updateWeatherData(setLocationUrl);
 }
 
 // 1.3 - Functions - Current City Button
+function updateDefaultLocation(response) {
+  setLocation = response.data.name;
+}
 function changeCitybyCoords(position) {
-  let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=${defaultUnits}`;
+  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=${setUnits}`;
   updateWeatherData(setLocationUrl);
+  axios.get(setLocationUrl).then(updateDefaultLocation);
 }
 
 function currCityButton(event) {
@@ -159,14 +139,32 @@ function currCityButton(event) {
   navigator.geolocation.getCurrentPosition(changeCitybyCoords);
 }
 
+// 1.4 - Functions - Unit Conversions
+function setUnitConversionCTF(event) {
+  event.preventDefault();
+
+  setUnits = "imperial";
+  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+  unitConversionCTF.classList.add("disableLink");
+  unitConversionFTC.classList.remove("disableLink");
+
+  updateWeatherData(setLocationUrl);
+}
+function setUnitConversionFTC(event) {
+  setUnits = "metric";
+  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+  unitConversionFTC.classList.add("disableLink");
+  unitConversionCTF.classList.remove("disableLink");
+  updateWeatherData(setLocationUrl);
+}
+
 // 2.0 - SCRIPT
 // 2.1 - Script - Weather API
-let defaultLocation = "Melbourne,AU";
-let defaultUnits = "metric";
+let setLocation = "Melbourne,AU";
+let setUnits = "metric";
 let apiKey = "7059cb165caa3316bff682d263a01b1e";
-let locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}&units=${defaultUnits}`;
-updateWeatherData(locationUrl);
-console.log(locationUrl);
+let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+updateWeatherData(setLocationUrl);
 
 // 2.2 - Script - Search City Form
 let searchCityButton = document.querySelector("form");
@@ -175,3 +173,10 @@ searchCityButton.addEventListener("submit", changeCity);
 // 2.3 - Script - Current City Button
 let currentCityButton = document.querySelector("#current-location-button");
 currentCityButton.addEventListener("click", currCityButton);
+
+//2.4 - Script - Temperature units conversion
+let unitConversionCTF = document.querySelector("#cel-to-feh");
+unitConversionCTF.addEventListener("click", setUnitConversionCTF);
+let unitConversionFTC = document.querySelector("#feh-to-cel");
+unitConversionFTC.addEventListener("click", setUnitConversionFTC);
+console.log(setUnits);
