@@ -1,12 +1,36 @@
 // 1.0 - FUNCTIONS SECTION
-// 1.3 - Functions - Weather API
+// 1.1 - Functions - Weather API
 function setCityHeader(response) {
   let setCity = document.querySelector("#current-city");
   setCity.innerHTML = response.data.name;
 }
 
+/*
+function setWeatherIcon(weatherMain) {
+  switch (weatherMain) {
+    case "Clear":
+      return '<i class="fa-solid fa-sun"></i>';
+    case "Clouds":
+      return '<i class="fa-solid fa-cloud"></i>';
+    case "Rain":
+      return '<i class="fa-solid fa-cloud-showers-heavy"></i>';
+    case "Thunderstorm":
+      return '<i class="fa-solid fa-cloud-bolt"></i>';
+    case "Drizzle":
+      return '<i class="fa-solid fa-cloud-rain"></i>';
+    case "Snow":
+      return '<i class="fa-snowflake"></i>';
+
+    default:
+      return '<i class="fa-smog"></i>';
+  }
+}
+*/
+
 function setTempData(response) {
-  let currentDateTime = Intl.DateTimeFormat("en-GB", {
+  console.log(response);
+
+  let timeNow = Intl.DateTimeFormat("en-GB", {
     weekday: "short",
     day: "2-digit",
     month: "short",
@@ -16,12 +40,42 @@ function setTempData(response) {
     hour12: "true",
     timeZoneName: "short",
   }).format(new Date());
+  let currentDate = document.querySelector("#current-date");
+  currentDate.innerHTML = timeNow;
 
-  let lastUpdateWeatherDate = document.querySelector("#current-date");
+  let weatherDesc = response.data.weather[0].main;
 
-  lastUpdateWeatherDate.innerHTML = currentDateTime;
+  switch (weatherDesc) {
+    case "Clear":
+      weatherDesc = '<i class="fa-solid fa-sun"></i>';
+      break;
+    case "Clouds":
+      weatherDesc = '<i class="fa-solid fa-cloud"></i>';
+      break;
+    case "Rain":
+      weatherDesc = '<i class="fa-solid fa-cloud-showers-heavy"></i>';
+      break;
+    case "Thunderstorm":
+      weatherDesc = '<i class="fa-solid fa-cloud-bolt"></i>';
+      break;
+    case "Drizzle":
+      weatherDesc = '<i class="fa-solid fa-cloud-rain"></i>';
+      break;
+    case "Snow":
+      weatherDesc = '<i class="fa-snowflake"></i>';
+      break;
+
+    default:
+      weatherDesc = '<i class="fa-smog"></i>';
+      break;
+  }
+
+  console.log(weatherDesc);
+
+  let currentWeatherIcon = document.querySelector("#today-weather-icon");
+  currentWeatherIcon.innerHTML = weatherDesc;
+
   let todayTemp = document.querySelector("#today-temp");
-
   todayTemp.innerHTML = Math.round(response.data.main.temp, 1);
 
   let todayMinTemp = document.querySelector("#today-min-temp");
@@ -34,7 +88,10 @@ function setTempData(response) {
   todayWeatherDesc.innerHTML = response.data.weather[0].description;
 
   let todayWindspeed = document.querySelector("#today-windspeed");
-  todayWindspeed.innerHTML = `${Math.round(response.data.wind.speed, 1)} m/s`;
+  todayWindspeed.innerHTML = `${Math.round(
+    response.data.wind.speed * 3.6,
+    1
+  )} km/h`;
 
   let todayPressure = document.querySelector("#today-pressure");
   todayPressure.innerHTML = `${Math.round(response.data.main.pressure, 1)} hPa`;
@@ -51,7 +108,7 @@ function updateWeatherData(url) {
   axios.get(url).then(setTempData);
 }
 
-// 1.4 - Functions - Search City Form
+// 1.2 - Functions - Search City Form
 function capitaliseFirstLetter(word) {
   let firstLetterInput = word.charAt(0);
   firstLetterInput = firstLetterInput.toUpperCase();
@@ -62,17 +119,31 @@ function capitaliseFirstLetter(word) {
 
 function changeCity(event) {
   event.preventDefault();
-  let setLocation = document.querySelector("#city-name");
-  setLocation = capitaliseFirstLetter(setLocation.value.toLowerCase().trim());
+  let searchInput = document.querySelector("#city-name");
+  searchInput = capitaliseFirstLetter(searchInput.value.toLowerCase().trim());
 
-  let setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${defaultUnits}`;
+  let setLocation = null;
+
+  // Set location variable depending if country code is part of input
+  if (searchInput.includes(",")) {
+    let extractCountryCode = searchInput
+      .substring(searchInput.indexOf(",") + 1)
+      .toUpperCase();
+    let extractCityName = searchInput.substring(0, searchInput.length - 3);
+    setLocation = `${extractCityName},${extractCountryCode}`;
+  } else {
+    let extractCityName = searchInput;
+    setLocation = extractCityName;
+  }
+
+  let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${defaultUnits}`;
 
   updateWeatherData(setLocationUrl);
 }
 
-// 1.5 - Functions - Current City Button
+// 1.3 - Functions - Current City Button
 function changeCitybyCoords(position) {
-  let setLocationUrl = `https://api.shecodes.io/weather/v1/current?lon=${position.coords.longitude}&lat=${position.coords.latitude}&key=${apiKey}&units=${defaultUnits}`;
+  let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=${defaultUnits}`;
   updateWeatherData(setLocationUrl);
 }
 
@@ -82,23 +153,18 @@ function currCityButton(event) {
 }
 
 // 2.0 - SCRIPT
-// 2.1 - Script - Date and Time
-
-// 2.2 - Script - Weather API
-// 2.2.1 - Scipt - Default City/Units on load
-let defaultLocation = "Melbourne";
+// 2.1 - Script - Weather API
+let defaultLocation = "Melbourne,AU";
 let defaultUnits = "metric";
-let apiKey = "18a0ed27t1bf3oc3ff7b86307c44ff70";
-let locationUrl = `https://api.shecodes.io/weather/v1/current?query=${defaultLocation}&key=${apiKey}&units=${defaultUnits}`;
+let apiKey = "7059cb165caa3316bff682d263a01b1e";
+let locationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&appid=${apiKey}&units=${defaultUnits}`;
 updateWeatherData(locationUrl);
+console.log(locationUrl);
 
-/* let currentWeatherDesc = axios.get(cityUrl).then(weatherDescID);
-console.log(currentWeatherDesc);
-*/
-// 2.3 - Script - Search City Form
+// 2.2 - Script - Search City Form
 let searchCityButton = document.querySelector("form");
 searchCityButton.addEventListener("submit", changeCity);
 
-// 2.4 - Script - Current City Button
+// 2.3 - Script - Current City Button
 let currentCityButton = document.querySelector("#current-location-button");
 currentCityButton.addEventListener("click", currCityButton);
