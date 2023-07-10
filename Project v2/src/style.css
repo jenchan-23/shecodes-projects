@@ -1,0 +1,90 @@
+/* Layer 0.0 - General styles - all layers */
+.disableLink {
+  cursor: default;
+  color: black;
+}
+
+#temp-units-superscript {
+  display: inline;
+  font-size: 60%;
+  padding: 0;
+  vertical-align: text-top;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Layer 1.0 - Background container */
+
+.bg-day {
+  background-image: url(day.png);
+  background: radial-gradient(
+    401px at 50.6% -0.3%,
+    rgba(255, 255, 255, 0.31) 1.2%,
+    rgb(36, 212, 219) 100.2%
+  );
+  height: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-left: 15px;
+}
+
+/* Layer 2.1 - Current Weather Section */
+.current-weather-box {
+  margin: 20px 0 10px 25%;
+  padding: 20px 20px;
+  max-width: 650px;
+  border: 1px solid rgba(236, 251, 255, 0.5);
+  border-radius: 100px 100px 100px 15px;
+  background-color: rgba(236, 251, 255, 0.5);
+}
+
+ul {
+  list-style: none;
+}
+
+.details-table {
+  padding: 10px 10px;
+  font-size: 14px;
+  line-height: 10px;
+  margin-top: 40px;
+}
+
+.details-table-left {
+  text-align: right;
+  border-right: 2px dotted lightgrey;
+  border-bottom: none;
+}
+
+.details-table-left {
+  border-bottom: none;
+}
+
+/* Layer 2.2 - Forecast Section */
+#presenter img {
+  width: 100px;
+}
+/* Layer 2.3 - Toggle Section */
+.active-forecast-box {
+  margin: 0 0 75% 25%;
+  padding: 20px 0;
+  max-width: 350px;
+  border: 1px solid rgba(236, 251, 255, 0.5);
+  border-radius: 100px 100px 100px 15px;
+  background-color: rgba(236, 251, 255, 0.5);
+}
+
+.bg-night {
+  background-image: url(night.png);
+  background: linear-gradient(
+    178.1deg,
+    rgb(60, 55, 106) 8.5%,
+    rgb(23, 20, 69) 82.4%
+  );
+}
+
+.dark-box {
+  border: 1px solid rgba(119, 129, 132, 0.5);
+  background-color: rgba(119, 129, 132, 0.5);
+}
