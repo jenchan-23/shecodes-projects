@@ -2,82 +2,61 @@
 // 1.1 - Functions - Weather API
 function setCityHeader(response) {
   let setCity = document.querySelector("#current-city");
-  setCity.innerHTML = response.data.name;
+  setCity.innerHTML = `${response.data.city}`;
 }
 
 function setWeatherData(response) {
-  let timeNow = Intl.DateTimeFormat("en-GB", {
+  let currentDate = document.querySelector("#current-date");
+  currentDate.innerHTML = `${Intl.DateTimeFormat("en-GB", {
     weekday: "short",
     day: "2-digit",
-    month: "short",
+    month: "2-digit",
     year: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: "true",
-    timeZoneName: "short",
-  }).format(new Date());
-  let currentDate = document.querySelector("#current-date");
-  currentDate.innerHTML = timeNow;
-
-  let weatherDesc = response.data.weather[0].main;
-
-  switch (weatherDesc) {
-    case "Clear":
-      weatherDesc = '<i class="fa-solid fa-sun"></i>';
-      break;
-    case "Clouds":
-      weatherDesc = '<i class="fa-solid fa-cloud"></i>';
-      break;
-    case "Rain":
-      weatherDesc = '<i class="fa-solid fa-cloud-showers-heavy"></i>';
-      break;
-    case "Thunderstorm":
-      weatherDesc = '<i class="fa-solid fa-cloud-bolt"></i>';
-      break;
-    case "Drizzle":
-      weatherDesc = '<i class="fa-solid fa-cloud-rain"></i>';
-      break;
-    case "Snow":
-      weatherDesc = '<i class="fa-snowflake"></i>';
-      break;
-
-    default:
-      weatherDesc = '<i class="fa-smog"></i>';
-      break;
-  }
+  }).format(new Date())}`;
 
   let currentWeatherIcon = document.querySelector("#today-weather-icon");
-  currentWeatherIcon.innerHTML = weatherDesc;
+  currentWeatherIcon.innerHTML = `<img src="${response.data.condition.icon_url}" id="today-weather-icon"/>`;
 
   let todayTemp = document.querySelector("#today-temp");
-  todayTemp.innerHTML = Math.round(response.data.main.temp, 1);
-
-  let todayMinTemp = document.querySelector("#today-min-temp");
-  todayMinTemp.innerHTML = Math.round(response.data.main.temp_min, 1);
-
-  let todayMaxTemp = document.querySelector("#today-max-temp");
-  todayMaxTemp.innerHTML = Math.round(response.data.main.temp_max, 1);
+  todayTemp.innerHTML = Math.round(response.data.temperature.current, 1);
 
   let todayWeatherDesc = document.querySelector("#today-weather-desc");
-  todayWeatherDesc.innerHTML = response.data.weather[0].description;
+  todayWeatherDesc.innerHTML = response.data.condition.description;
 
   let todayWindspeed = document.querySelector("#today-windspeed");
-  todayWindspeed.innerHTML = `${Math.round(
-    response.data.wind.speed * 3.6,
-    1
-  )} km/h`;
+  if (setUnits === "metric") {
+    todayWindspeed.innerHTML = `${Math.round(
+      response.data.wind.speed * 3.6,
+      1
+    )} km/h`;
+  } else {
+    todayWindspeed.innerHTML = `${Math.round(
+      response.data.wind.speed * 1.609,
+      1
+    )} km/h`;
+  }
 
   let todayPressure = document.querySelector("#today-pressure");
-  todayPressure.innerHTML = `${Math.round(response.data.main.pressure, 1)} hPa`;
+  todayPressure.innerHTML = `${Math.round(
+    response.data.temperature.pressure,
+    1
+  )} hPa`;
 
   let todayFeelsLike = document.querySelector("#feels-like-temp");
-  todayFeelsLike.innerHTML = `${Math.round(response.data.main.feels_like, 1)}`;
+  todayFeelsLike.innerHTML = `${Math.round(
+    response.data.temperature.feels_like,
+    1
+  )}`;
 
   let todayHumidity = document.querySelector("#today-humidity");
-  todayHumidity.innerHTML = `${Math.round(response.data.main.humidity, 1)}%`;
+  todayHumidity.innerHTML = `${Math.round(
+    response.data.temperature.humidity,
+    1
+  )}%`;
 
   let lastUpdateData = document.querySelector("#last-update-weather");
-  lastUpdateData.innerHTML = Intl.DateTimeFormat("en-GB", {
+  /*
+  lastUpdateData.innerHTML = `${Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
     month: "short",
     year: "2-digit",
@@ -85,12 +64,17 @@ function setWeatherData(response) {
     minute: "2-digit",
     hour12: "true",
     timeZoneName: "short",
-  }).format(new Date(response.data.dt * 1000));
+  }).format(new Date(response.data.time * 1000))}`;
+  */
 }
 
-function updateWeatherData(url) {
-  axios.get(url).then(setCityHeader);
-  axios.get(url).then(setWeatherData);
+function updateWeatherData(weatherUrl, forecastUrl) {
+  axios.get(weatherUrl).then(setCityHeader);
+  axios.get(weatherUrl).then(setWeatherData);
+  let forecastButtonState = document.querySelector("#toggle-forecast");
+  if (forecastButtonState.innerHTML === "Hide Forecast") {
+    updateWeatherForecast(forecastUrl);
+  }
 }
 
 // 1.2 - Functions - Search City Form
@@ -107,31 +91,23 @@ function changeCity(event) {
   let searchInput = document.querySelector("#search-city-input");
   searchInput = capitaliseFirstLetter(searchInput.value.toLowerCase().trim());
 
-  // Set location variable depending if country code is part of input
-  if (searchInput.includes(",")) {
-    let extractCountryCode = searchInput
-      .substring(searchInput.indexOf(",") + 1)
-      .toUpperCase();
-    let extractCityName = searchInput.substring(0, searchInput.length - 3);
-    setLocation = `${extractCityName},${extractCountryCode}`;
-  } else {
-    let extractCityName = searchInput;
-    setLocation = extractCityName;
-  }
+  setLocation = searchInput;
 
-  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+  setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
+  setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
 
-  updateWeatherData(setLocationUrl);
+  updateWeatherData(setLocationUrl, setForecastUrl);
 }
 
 // 1.3 - Functions - Current City Button
 function updateDefaultLocation(response) {
-  setLocation = response.data.name;
+  setLocation = response.data.city;
 }
 function changeCitybyCoords(position) {
-  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=${setUnits}`;
-  updateWeatherData(setLocationUrl);
+  setLocationUrl = `https://api.shecodes.io/weather/v1/current?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}&units=${setUnits}`;
+  setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}&units=${setUnits}`;
   axios.get(setLocationUrl).then(updateDefaultLocation);
+  updateWeatherData(setLocationUrl, setForecastUrl);
 }
 
 function currCityButton(event) {
@@ -144,39 +120,114 @@ function setUnitConversionCTF(event) {
   event.preventDefault();
 
   setUnits = "imperial";
-  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+  setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
+  setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
+
   unitConversionCTF.classList.add("disableLink");
   unitConversionFTC.classList.remove("disableLink");
 
-  updateWeatherData(setLocationUrl);
+  updateWeatherData(setLocationUrl, setForecastUrl);
 }
+
 function setUnitConversionFTC(event) {
   setUnits = "metric";
-  setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+  setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
+  setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
   unitConversionFTC.classList.add("disableLink");
   unitConversionCTF.classList.remove("disableLink");
-  updateWeatherData(setLocationUrl);
+  updateWeatherData(setLocationUrl, setForecastUrl);
+}
+
+// 1.5 Functions - Forecast Button
+
+function forecastData(response) {
+  let forecast = response.data.daily;
+
+  let dayArr = ["Sun", "Mon", "Tues", "Weds", "Thurs", "Fri", "Sat"];
+
+  let forecastHTML = `<div class="row"> `;
+
+  forecast.forEach((forecastDay, index) => {
+    if (index > 0 && index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
+    <div class="col-2">
+    <div class=
+    "forecast-day">${dayArr[new Date(forecastDay.time * 1000).getDay()]}</div>
+    <div class="forecast-icon"><img src="${
+      forecastDay.condition.icon_url
+    }" alt="${forecastDay.condition.description}" width="50"/></div>
+    <div class="forecast-min-max">${Math.round(
+      forecastDay.temperature.minimum
+    )}° | ${Math.round(forecastDay.temperature.maximum)}°</div></div>`;
+    }
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  let forecastElement = document.querySelector("#daily-forecast");
+  forecastElement.innerHTML = forecastHTML;
+}
+
+function deactivateForecast() {
+  let forecastElement = document.querySelector("#daily-forecast");
+  forecastElement.innerHTML = "";
+}
+
+function updateWeatherForecast(url) {
+  axios.get(url).then(forecastData);
+}
+
+function toggleForecast() {
+  let forecastButtonState = document.querySelector("#toggle-forecast");
+  if (forecastButtonState.innerHTML === "Show Forecast") {
+    forecastButtonState.innerHTML = "Hide Forecast";
+    updateWeatherForecast(setForecastUrl);
+    let forecastElement = document.querySelector("#daily-forecast");
+    forecastElement.classList.add("active-forecast-box");
+  } else {
+    forecastButtonState.innerHTML = "Show Forecast";
+    deactivateForecast();
+    let forecastElement = document.querySelector("#daily-forecast");
+    forecastElement.classList.remove("active-forecast-box");
+  }
+}
+
+function toggleTheme() {
+  let toggleThemeState = document.querySelector("#toggle-theme");
+  if (toggleThemeState.innerHTML.includes("Dark")) {
+    toggleThemeState.innerHTML = "Light Theme";
+    toggleThemeState.classList.add("btn-light");
+    let bgChangeState = document.querySelector("body");
+    bgChangeState.classList.add("bg-night");
+  } else {
+    toggleThemeState.innerHTML = "Dark Theme";
+    toggleThemeState.classList.remove("btn-light");
+    let bgChangeState = document.querySelector("body");
+    bgChangeState.classList.remove("bg-night");
+  }
 }
 
 // 2.0 - SCRIPT
 // 2.1 - Script - Weather API
-let setLocation = "Melbourne,AU";
+let setLocation = "Melbourne";
 let setUnits = "metric";
-let apiKey = "7059cb165caa3316bff682d263a01b1e";
-let setLocationUrl = `https://api.openweathermap.org/data/2.5/weather?q=${setLocation}&appid=${apiKey}&units=${setUnits}`;
+let apiKey = "18a0ed27t1bf3oc3ff7b86307c44ff70";
+let setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
+let setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
 updateWeatherData(setLocationUrl);
 
 // 2.2 - Script - Search City Form
-let searchCityButton = document.querySelector("form");
-searchCityButton.addEventListener("submit", changeCity);
+let searchCityButton = document.querySelector("#search-location-button");
+searchCityButton.addEventListener("click", changeCity);
 
 // 2.3 - Script - Current City Button
 let currentCityButton = document.querySelector("#current-location-button");
 currentCityButton.addEventListener("click", currCityButton);
 
-//2.4 - Script - Temperature units conversion
+// 2.4 - Script - Temperature units conversion
 let unitConversionCTF = document.querySelector("#cel-to-feh");
 unitConversionCTF.addEventListener("click", setUnitConversionCTF);
 let unitConversionFTC = document.querySelector("#feh-to-cel");
 unitConversionFTC.addEventListener("click", setUnitConversionFTC);
-console.log(setUnits);
+
+// 2.5 - Script Toggle Forecast

@@ -25,74 +25,129 @@
       <!-- Layer 2.1 - Weather App - Current Weather Section   -->
       <div class="row">
         <div class="col-3"></div>
-        <div class="col-9 current-weather-box">
+        <div class="col-9 current-weather-box" id="current-weather-data">
           <!-- Layer 3.1 - Weather App - Date/Time -->
           <div class="row">
             <div class="col"><h3 id="current-date"></h3></div>
           </div>
-            <!-- Layer 3.2 - Weather App - City/Current Temp -->
-            <div class="row">
-              <div class="col">
-                <h1><i class="fa-solid fa-location-dot"></i>      <span id="current-city"></span></h1>
-                <span id="today-temp">--</span
-                ><span id="select-temp-metric"
-                  ><a href="#" class="disableLink" id="feh-to-cel">°C</a> |
-                  <a href="#" id="cel-to-feh">°F</a></span
-                >
-              </div>
-              </div>
-
-              <!-- Layer 3.3 - Weather App - Weather Desc & Details -->
-            <div class="row">
-              <div class="col-6">
-                <ul class="today-temp-list"><li id="today-weather-icon"></li>
-                    <li id="today-weather-desc">---</li>
-                </ul>
-                </div>
-
-              <!-- Layer 3.4 - Weather App - Search form -->
-              <form>
-        <div class="container" id="change-city-form">
+          <!-- Layer 3.2 - Weather App - City/Current Temp -->
           <div class="row">
-            <input
-              class="form-control-sm col-4"
-              type="text"
-              placeholder="Enter another city..."
-              aria-label="change city"
-              autocomplete="off"
-              id="search-city-input"
-            />
-
-            <input class="col-3 btn btn-primary" type="submit" value="Find" />
-            <input
-              class="col-3 btn btn-primary location"
-              type="button"
-              id="current-location-button"
-              value="Current"
-            />
-          </div>
-        </div>
-      </form>
+            <div class="col">
+              <h2>
+                <i class="fa-solid fa-location-dot current-location-icon"></i>
+                <span id="current-city"></span>
+              </h2>
             </div>
           </div>
-          <!-- Layer 2.2 - Weather App - Forecast section Section   -->
+
+          <!-- Layer 3.3 - Weather App - Weather Desc & Details -->
           <div class="row">
-            <div class="col-3"></div>
+            <div class="col-3">
+              <ul class="today-temp-list">
+                <li id="today-weather-icon"></li>
+                <li id="today-weather-desc">---</li>
+              </ul>
+            </div>
+            <div class="col-3 current-temp">
+              <span id="today-temp">--</span
+              ><span class="temp-units-superscript" id="select-temp-metric"
+                ><a href="#" class="disableLink" id="feh-to-cel">°C</a> |
+                <a href="#" class="" id="cel-to-feh">°F</a></span
+              >
+            </div>
+            <div class="col-6">
+              <table class="details-table">
+                <tbody>
+                  <tr>
+                    <td class="details-table-left">
+                      <i class="fa-solid fa-wind current-icons"></i>
+                    </td>
+                    <td class="details-table-right" id="today-windspeed">
+                      -- m/s
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="details-table-left">
+                      <i class="fa-solid fa-gauge current-icons"></i>
+                    </td>
+                    <td class="details-table-right" id="today-pressure">
+                      ----hPa
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="details-table-left">
+                      <i class="fa-solid fa-droplet current-icons"></i>
+                    </td>
+                    <td class="details-table-right" id="today-humidity">--%</td>
+                  </tr>
+                  <tr>
+                    <td class="details-table-left current-icons">Feels Like</td>
+                    <td class="details-table-right">
+                      <span id="feels-like-temp">--</span>°
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <!-- Layer 2.3 - Weather App - Toggle section Section   -->
-        <div class="row">
-          <div class="col-3">
-            <img
-              src="images/presenter.png"
-              alt="presenter"
-              id="presenter"
-              width="250px"
-            />
+
+          <!-- Layer 3.4 - Weather App - Search form -->
+          <hr />
+          <div class="row">
+            <div class="col">
+              <form>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter another city..."
+                    aria-label="Search City"
+                    aria-describedby="button-addon4"
+                    autocomplete="off"
+                    id="search-city-input"
+                  />
+                  <div class="input-group-append" id="button-addon4">
+                    <button
+                      class="btn btn-outline-dark"
+                      type="button"
+                      id="search-location-button"
+                    >
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button
+                      class="btn btn-outline-dark"
+                      type="button"
+                      id="current-location-button"
+                    >
+                      <i class="fa-solid fa-location-crosshairs"></i>
+                    </button>
+                    <button class="btn btn-outline-dark" onclick="toggleForecast()" id="toggle-forecast">Show Forecast</button>
+                     
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-          <div class="col-9 active-forecast-box" id="daily-forecast"></div>
+
+          <!--JS paste-->
         </div>
       </div>
+
+      
+    <!-- Layer 2.2 - Weather App - Toggle section Section   -->
+    <div class="row">
+      <div class="col-3">
+        <img
+          src="images/presenter.png"
+          alt="presenter"
+          id="presenter"
+          width="250px"
+        />
+        <div class="change-theme-button">
+        <button class="btn btn-outline-dark" onclick="toggleTheme()" id="toggle-theme">Dark Theme</button>
+        </div>
+      </div>
+      <div class="col-9" id="daily-forecast"></div>
     </div>
 
     <script src="src/index.js"></script>
