@@ -27,7 +27,6 @@ form {
 /* Layer 1.0 - Background container */
 
 .bg-day {
-  background-image: url(images/day.jpg);
   background: linear-gradient(120deg, #2971b2, #ffffff);
   height: 100%;
   background-repeat: no-repeat;
@@ -38,10 +37,10 @@ form {
 /* Layer 2.1 - Current Weather Section */
 .current-weather-box {
   margin-top: 20px;
-  padding: 20px 50px;
+  padding: 15px 50px;
   max-width: 650px;
   border: 1px solid rgba(236, 251, 255, 0.5);
-  border-radius: 100px 100px 100px 15px;
+  border-radius: 100px 100px 100px 5px;
   background-color: rgba(236, 251, 255, 0.8);
 }
 
@@ -63,7 +62,7 @@ ul {
 }
 #today-weather-desc {
   text-transform: capitalize;
-  text-align: center;
+  text-align: right;
   font-size: 12px;
 }
 .current-icons {
@@ -102,18 +101,17 @@ ul {
 }
 /* Layer 2.3 - Toggle Section */
 .active-forecast-box {
-  margin: 20px 0 75% 0;
-  padding: 20px 0 20px 60px;
+  margin: 20px 0 0 0;
+  padding: 15px 0 15px 60px;
   max-width: 500px;
   border: 1px solid rgba(236, 251, 255, 0.5);
-  border-radius: 100px 100px 100px 15px;
+  border-radius: 100px 100px 100px 5px;
   background-color: rgba(236, 251, 255, 0.8);
   font-size: 12px;
   text-align: center;
 }
 
 .bg-night {
-  background-image: url(images/night.jpg);
   background: linear-gradient(
     178.1deg,
     rgb(60, 55, 106) 8.5%,
@@ -127,6 +125,6 @@ ul {
 
 .change-theme-button {
   display: block;
-  margin: -20px auto;
+  margin: -20px 10px 0 0;
   text-align: center;
 }

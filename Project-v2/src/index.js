@@ -15,7 +15,7 @@ function setWeatherData(response) {
   }).format(new Date())}`;
 
   let currentWeatherIcon = document.querySelector("#today-weather-icon");
-  currentWeatherIcon.innerHTML = `<img src="${response.data.condition.icon_url}" id="today-weather-icon"/>`;
+  currentWeatherIcon.innerHTML = `<img src="${response.data.condition.icon_url}" id="today-weather-icon" width="80"/>`;
 
   let todayTemp = document.querySelector("#today-temp");
   todayTemp.innerHTML = Math.round(response.data.temperature.current, 1);
