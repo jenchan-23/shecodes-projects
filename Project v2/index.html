@@ -30,7 +30,6 @@
           <div class="row">
             <div class="col"><h3 id="current-date"></h3></div>
           </div>
-
           <!-- Layer 3.2 - Weather App - City/Current Temp -->
           <div class="row">
             <div class="col">
@@ -94,7 +93,6 @@
 
           <!-- Layer 3.4 - Weather App - Search form -->
           <hr />
-
           <div class="row">
             <div class="col">
               <form>
@@ -116,7 +114,6 @@
                     >
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-
                     <button
                       class="btn btn-outline-dark"
                       type="button"
@@ -126,8 +123,8 @@
                     </button>
                     <button
                       class="btn btn-outline-dark"
-                      id="forecast-toggle"
                       onclick="toggleForecast()"
+                      id="toggle-forecast"
                     >
                       Show Forecast
                     </button>
@@ -136,6 +133,8 @@
               </form>
             </div>
           </div>
+
+          <!--JS paste-->
         </div>
       </div>
 
@@ -144,7 +143,6 @@
         <div class="col-3"></div>
         <div class="col-9" id="daily-forecast"></div>
       </div>
-
       <div class="row">
         <div class="col-3">
           <img
@@ -163,27 +161,18 @@
             </button>
           </div>
         </div>
+        <div class="col-9">
+            <footer>
+                Open-sourced code by <a href="https://github.com/jenchan-23/shecodes-projects" target="_blank">Jenny Chan</a> hosted on <a href="https://main--elaborate-treacle-edabb0.netlify.app/project-v2/" target="_blank">Netlify</a>
+                <br/>
+                Presenter image designed by <a href="http://www.freepik.com"></a>alliesinteractive / Freepik</a>
+                <br/>
+                Weather data last updated on<span id="last-update-weather"></span>
+
+            </footer>
+        </div>
       </div>
     </div>
-    <footer>
-      Open-sourced code by
-      <a href="https://github.com/jenchan-23/shecodes-projects" target="_blank"
-        >Jenny Chan</a
-      >
-      hosted on
-      <a
-        href="https://main--elaborate-treacle-edabb0.netlify.app/project-v2/"
-        target="_blank"
-        >Netlify</a
-      >
-      <br />
-      Presenter image designed by
-      <a href="http://www.freepik.com" target="_blank"
-        >alliesinteractive / Freepik</a
-      >
-      <br />
-      Weather data last updated on <span id="last-update-weather"></span>
-    </footer>
     <script src="src/index.js"></script>
   </body>
 </html>

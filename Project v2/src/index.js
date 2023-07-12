@@ -10,7 +10,7 @@ function setWeatherData(response) {
   currentDate.innerHTML = `${Intl.DateTimeFormat("en-GB", {
     weekday: "short",
     day: "2-digit",
-    month: "short",
+    month: "2-digit",
     year: "2-digit",
   }).format(new Date())}`;
 
@@ -69,7 +69,7 @@ function setWeatherData(response) {
 function updateWeatherData(weatherUrl, forecastUrl) {
   axios.get(weatherUrl).then(setCityHeader);
   axios.get(weatherUrl).then(setWeatherData);
-  let forecastButtonState = document.querySelector("#forecast-toggle");
+  let forecastButtonState = document.querySelector("#toggle-forecast");
   if (forecastButtonState.innerHTML === "Hide Forecast") {
     updateWeatherForecast(forecastUrl);
   }
@@ -101,7 +101,6 @@ function changeCity(event) {
 function updateDefaultLocation(response) {
   setLocation = response.data.city;
 }
-
 function changeCitybyCoords(position) {
   setLocationUrl = `https://api.shecodes.io/weather/v1/current?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}&units=${setUnits}`;
   setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?lat=${position.coords.latitude}&lon=${position.coords.longitude}&key=${apiKey}&units=${setUnits}`;
@@ -151,7 +150,7 @@ function forecastData(response) {
       forecastHTML =
         forecastHTML +
         `
-    <div class="col">
+    <div class="col-2">
     <div class=
     "forecast-day">${dayArr[new Date(forecastDay.time * 1000).getDay()]}</div>
     <div class="forecast-icon"><img src="${
@@ -177,7 +176,7 @@ function updateWeatherForecast(url) {
 }
 
 function toggleForecast() {
-  let forecastButtonState = document.querySelector("#forecast-toggle");
+  let forecastButtonState = document.querySelector("#toggle-forecast");
   if (forecastButtonState.innerHTML === "Show Forecast") {
     forecastButtonState.innerHTML = "Hide Forecast";
     updateWeatherForecast(setForecastUrl);
@@ -213,7 +212,7 @@ let setUnits = "metric";
 let apiKey = "18a0ed27t1bf3oc3ff7b86307c44ff70";
 let setLocationUrl = `https://api.shecodes.io/weather/v1/current?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
 let setForecastUrl = `https://api.shecodes.io/weather/v1/forecast?query=${setLocation}&key=${apiKey}&units=${setUnits}`;
-updateWeatherData(setLocationUrl, setForecastUrl);
+updateWeatherData(setLocationUrl);
 
 // 2.2 - Script - Search City Form
 let searchCityButton = document.querySelector("#search-location-button");
@@ -228,5 +227,3 @@ let unitConversionCTF = document.querySelector("#cel-to-feh");
 unitConversionCTF.addEventListener("click", setUnitConversionCTF);
 let unitConversionFTC = document.querySelector("#feh-to-cel");
 unitConversionFTC.addEventListener("click", setUnitConversionFTC);
-
-// 2.5 - Script - Toggle Forecast
