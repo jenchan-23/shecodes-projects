@@ -6,7 +6,7 @@ hr {
   border-top: 2px dotted black;
 }
 form {
-  max-width: 75%;
+  max-width: 80%;
   margin: 0 auto;
 }
 .disableLink {
@@ -118,10 +118,23 @@ ul {
   margin: -20px 10px 0 0;
   text-align: center;
 }
-footer {
+
+.last-update {
   display: block;
-  margin: 0px auto;
+  margin: 15px 50px 10px auto;
   max-width: 600px;
   text-align: right;
   font-size: 10px;
+}
+.footer-ref {
+  display: block;
+  margin-left: 30px;
+  margin-top: 20px;
+  text-align: left;
+  font-size: 10px;
+  color: rgb(226, 222, 222);
+}
+
+.footer-ref a {
+  color: rgb(254, 233, 115);
 }
