@@ -176,7 +176,8 @@ function updateWeatherForecast(url) {
   axios.get(url).then(forecastData);
 }
 
-function toggleForecast() {
+function toggleForecast(event) {
+  event.preventDefault;
   let forecastButtonState = document.querySelector("#forecast-toggle");
   if (forecastButtonState.innerHTML === "Show Forecast") {
     forecastButtonState.innerHTML = "Hide Forecast";
@@ -230,3 +231,5 @@ let unitConversionFTC = document.querySelector("#feh-to-cel");
 unitConversionFTC.addEventListener("click", setUnitConversionFTC);
 
 // 2.5 - Script - Toggle Forecast
+let toggleForecastButton = document.querySelector("#forecast-toggle");
+toggleForecastButton.addEventListener("click", toggleForecast);
